@@ -1,0 +1,23 @@
+# permissions for end users to view rolloutboxes.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: paddy
+    app.kubernetes.io/managed-by: kustomize
+  name: rolloutbox-viewer-role
+rules:
+- apiGroups:
+  - paddy.github.com
+  resources:
+  - rolloutboxes
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - paddy.github.com
+  resources:
+  - rolloutboxes/status
+  verbs:
+  - get
