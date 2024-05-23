@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- paddy_v1_rolloutbox.yaml
+#+kubebuilder:scaffold:manifestskustomizesamples
