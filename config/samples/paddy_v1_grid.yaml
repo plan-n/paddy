@@ -1,9 +1,9 @@
 apiVersion: paddy.github.com/v1
-kind: RolloutBox
+kind: Grid
 metadata:
   labels:
     app.kubernetes.io/name: paddy
     app.kubernetes.io/managed-by: kustomize
-  name: rolloutbox-sample
+  name: grid-sample
 spec:
   # TODO(user): Add fields here

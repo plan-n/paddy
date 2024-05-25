@@ -122,11 +122,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err = (&controller.RolloutBoxReconciler{
+	if err = (&controller.GridReconciler{
 		Client: mgr.GetClient(),
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to create controller", "controller", "RolloutBox")
+		setupLog.Error(err, "unable to create controller", "controller", "Grid")
 		os.Exit(1)
 	}
 	//+kubebuilder:scaffold:builder

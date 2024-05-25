@@ -30,7 +30,7 @@ import (
 	paddyv1 "github.com/paddy/api/v1"
 )
 
-var _ = Describe("RolloutBox Controller", func() {
+var _ = Describe("Grid Controller", func() {
 	Context("When reconciling a resource", func() {
 		const resourceName = "test-resource"
 
@@ -40,13 +40,13 @@ var _ = Describe("RolloutBox Controller", func() {
 			Name:      resourceName,
 			Namespace: "default", // TODO(user):Modify as needed
 		}
-		rolloutbox := &paddyv1.RolloutBox{}
+		grid := &paddyv1.Grid{}
 
 		BeforeEach(func() {
-			By("creating the custom resource for the Kind RolloutBox")
-			err := k8sClient.Get(ctx, typeNamespacedName, rolloutbox)
+			By("creating the custom resource for the Kind Grid")
+			err := k8sClient.Get(ctx, typeNamespacedName, grid)
 			if err != nil && errors.IsNotFound(err) {
-				resource := &paddyv1.RolloutBox{
+				resource := &paddyv1.Grid{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      resourceName,
 						Namespace: "default",
@@ -59,16 +59,16 @@ var _ = Describe("RolloutBox Controller", func() {
 
 		AfterEach(func() {
 			// TODO(user): Cleanup logic after each test, like removing the resource instance.
-			resource := &paddyv1.RolloutBox{}
+			resource := &paddyv1.Grid{}
 			err := k8sClient.Get(ctx, typeNamespacedName, resource)
 			Expect(err).NotTo(HaveOccurred())
 
-			By("Cleanup the specific resource instance RolloutBox")
+			By("Cleanup the specific resource instance Grid")
 			Expect(k8sClient.Delete(ctx, resource)).To(Succeed())
 		})
 		It("should successfully reconcile the resource", func() {
 			By("Reconciling the created resource")
-			controllerReconciler := &RolloutBoxReconciler{
+			controllerReconciler := &GridReconciler{
 				Client: k8sClient,
 				Scheme: k8sClient.Scheme(),
 			}
