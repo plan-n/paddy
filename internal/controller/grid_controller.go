@@ -41,12 +41,13 @@ const (
 // GridReconciler reconciles a Grid object
 type GridReconciler struct {
 	client.Client
-	Scheme *runtime.Scheme
+	Scheme   *runtime.Scheme
+	NodeName string
 }
 
-//+kubebuilder:rbac:groups=paddy.github.com,resources=grids,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=paddy.github.com,resources=grids/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=paddy.github.com,resources=grids/finalizers,verbs=update
+//+kubebuilder:rbac:groups=paddy.io,resources=grids,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=paddy.io,resources=grids/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=paddy.io,resources=grids/finalizers,verbs=update
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.

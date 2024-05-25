@@ -1,4 +1,4 @@
-apiVersion: paddy.github.com/v1
+apiVersion: paddy.io/v1
 kind: Grid
 metadata:
   labels:

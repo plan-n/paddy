@@ -8,7 +8,7 @@ metadata:
   name: grid-viewer-role
 rules:
 - apiGroups:
-  - paddy.github.com
+  - paddy.io
   resources:
   - grids
   verbs:
@@ -16,7 +16,7 @@ rules:
   - list
   - watch
 - apiGroups:
-  - paddy.github.com
+  - paddy.io
   resources:
   - grids/status
   verbs:

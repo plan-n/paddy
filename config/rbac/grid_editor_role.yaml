@@ -8,7 +8,7 @@ metadata:
   name: grid-editor-role
 rules:
 - apiGroups:
-  - paddy.github.com
+  - paddy.io
   resources:
   - grids
   verbs:
@@ -20,7 +20,7 @@ rules:
   - update
   - watch
 - apiGroups:
-  - paddy.github.com
+  - paddy.io
   resources:
   - grids/status
   verbs:
