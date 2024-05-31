@@ -18,8 +18,10 @@ package controller
 
 import (
 	"context"
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/tools/record"
 
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -42,6 +44,7 @@ const (
 type GridReconciler struct {
 	client.Client
 	Scheme   *runtime.Scheme
+	Recorder record.EventRecorder
 	NodeName string
 }
 
@@ -82,8 +85,39 @@ func (r *GridReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.
 			return ctrl.Result{}, err
 		}
 	}
+	if grid.Status.Phase == "" {
+		grid.Status.Phase = paddyv1.InitializingGridPhase
+		if err = r.Status().Update(ctx, grid); err != nil {
+			logger.Error(err, "Failed to update Grid phase")
+			return ctrl.Result{}, err
+		}
+		if err = r.Get(ctx, req.NamespacedName, grid); err != nil {
+			logger.Error(err, "Failed to re-fetch memcached")
+			return ctrl.Result{}, err
+		}
+		r.recordEvent(grid)
+	}
 
 	return ctrl.Result{}, nil
+}
+
+func (r *GridReconciler) recordEvent(grid *paddyv1.Grid) {
+	switch grid.Status.Phase {
+	case paddyv1.InitializingGridPhase:
+		r.Recorder.Event(grid, v1.EventTypeNormal, "Initializing", "Grid is initializing")
+	case paddyv1.InitializedGridPhase:
+		r.Recorder.Event(grid, v1.EventTypeNormal, "Initialized", "Grid is initialized")
+	case paddyv1.WaitingGridPhase:
+		r.Recorder.Event(grid, v1.EventTypeNormal, "Updated", "Grid is waiting for progress, target has changed")
+	case paddyv1.ProgressingGridPhase:
+		r.Recorder.Event(grid, v1.EventTypeNormal, "Scheduled", "Grid is progressing")
+	case paddyv1.SucceededGridPhase:
+		r.Recorder.Event(grid, v1.EventTypeNormal, "Succeeded", "Grid is succeeded")
+	case paddyv1.FailedGridPhase:
+		r.Recorder.Event(grid, v1.EventTypeWarning, "Failed", "Grid is failed")
+	case paddyv1.TerminatingGridPhase:
+		r.Recorder.Event(grid, v1.EventTypeWarning, "Terminating", "Grid is terminating")
+	}
 }
 
 // SetupWithManager sets up the controller with the Manager.

@@ -81,7 +81,7 @@ type GridSpec struct {
 	// +optional
 	WorkInstance string `json:"workInstance"`
 	// Namespace of resource in Kubernetes,includes deployment\service\scalers
-	// +required
+	// +optional
 	Namespace string `json:"namespace"`
 	// Service of kubernetes
 	Service   GridService  `json:"service"`
