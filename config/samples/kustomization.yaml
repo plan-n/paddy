@@ -1,4 +1,4 @@
 ## Append samples of your project ##
 resources:
-- paddy_v1_rolloutbox.yaml
+- paddy_v1_grid.yaml
 #+kubebuilder:scaffold:manifestskustomizesamples

@@ -5,9 +5,9 @@ metadata:
   name: manager-role
 rules:
 - apiGroups:
-  - paddy.github.com
+  - paddy.io
   resources:
-  - rolloutboxes
+  - grids
   verbs:
   - create
   - delete
@@ -17,15 +17,15 @@ rules:
   - update
   - watch
 - apiGroups:
-  - paddy.github.com
+  - paddy.io
   resources:
-  - rolloutboxes/finalizers
+  - grids/finalizers
   verbs:
   - update
 - apiGroups:
-  - paddy.github.com
+  - paddy.io
   resources:
-  - rolloutboxes/status
+  - grids/status
   verbs:
   - get
   - patch

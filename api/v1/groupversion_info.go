@@ -16,7 +16,7 @@ limitations under the License.
 
 // Package v1 contains API Schema definitions for the paddy v1 API group
 // +kubebuilder:object:generate=true
-// +groupName=paddy.github.com
+// +groupName=paddy.io
 package v1
 
 import (
@@ -26,7 +26,7 @@ import (
 
 var (
 	// GroupVersion is group version used to register these objects
-	GroupVersion = schema.GroupVersion{Group: "paddy.github.com", Version: "v1"}
+	GroupVersion = schema.GroupVersion{Group: "paddy.io", Version: "v1"}
 
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme
 	SchemeBuilder = &scheme.Builder{GroupVersion: GroupVersion}

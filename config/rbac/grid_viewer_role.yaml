@@ -1,27 +1,23 @@
-# permissions for end users to edit rolloutboxes.
+# permissions for end users to view grids.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
     app.kubernetes.io/name: paddy
     app.kubernetes.io/managed-by: kustomize
-  name: rolloutbox-editor-role
+  name: grid-viewer-role
 rules:
 - apiGroups:
-  - paddy.github.com
+  - paddy.io
   resources:
-  - rolloutboxes
+  - grids
   verbs:
-  - create
-  - delete
   - get
   - list
-  - patch
-  - update
   - watch
 - apiGroups:
-  - paddy.github.com
+  - paddy.io
   resources:
-  - rolloutboxes/status
+  - grids/status
   verbs:
   - get
