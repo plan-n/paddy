@@ -78,6 +78,35 @@ spec:
                 - kind
                 - name
                 type: object
+              webHooks:
+                description: WebHooks of Grid
+                items:
+                  properties:
+                    address:
+                      description: Address of Webhook
+                      type: string
+                    metaData:
+                      additionalProperties:
+                        type: string
+                      description: MetaData of Webhook, key-value pair
+                      type: object
+                    name:
+                      description: Name of WebHook
+                      type: string
+                    retries:
+                      description: Number of retry
+                      type: integer
+                    timeout:
+                      description: Timeout of WebHook
+                      type: string
+                    type:
+                      type: string
+                  required:
+                  - address
+                  - name
+                  - type
+                  type: object
+                type: array
               workInstance:
                 description: WorkInstance defined which paddy instance to work with
                   this rollout box

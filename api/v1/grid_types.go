@@ -72,6 +72,40 @@ type AutoScaler struct {
 	APIVersion string `json:"apiVersion"`
 }
 
+type HookType string
+
+const (
+	// StartRolloutHook execute webhook before start rollout
+	StartRolloutHook HookType = "start-rollout"
+	// FinishedRolloutHook execute webhook after the rollout finished
+	FinishedRolloutHook HookType = "finished-rollout"
+	// RollbackHook rollback canary analysis if webhook returns HTTP 200
+	RollbackHook HookType = "rollback"
+	// StartPromoteHook execute webhook before promote
+	StartPromoteHook HookType = "start-promote"
+	// PromotedFinishHook execute webhook after promoted
+	PromotedFinishHook HookType = "promoted-finish"
+	// PromotingHook execute webhook between promoting, after change traffic weight
+	PromotingHook HookType = "promoting"
+)
+
+type WebHook struct {
+	// Address of Webhook
+	// +required
+	Address string `json:"address"`
+	// Name of WebHook
+	Name string `json:"name"`
+	// Timeout of WebHook
+	Timeout string `json:"timeout,omitempty"`
+	// MetaData of Webhook, key-value pair
+	// +optional
+	MetaData map[string]string `json:"metaData,omitempty"`
+	// Number of retry
+	// +optional
+	Retries int      `json:"retries,omitempty"`
+	Type    HookType `json:"type"`
+}
+
 // GridSpec defines the desired state of Grid
 type GridSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
@@ -86,6 +120,9 @@ type GridSpec struct {
 	// Service of kubernetes
 	Service   GridService  `json:"service"`
 	TargetRef TargetObject `json:"targetRef"`
+	// WebHooks of Grid
+	// +optional
+	WebHooks []WebHook `json:"webHooks,omitempty"`
 }
 
 // GridStatus defines the observed state of Grid
