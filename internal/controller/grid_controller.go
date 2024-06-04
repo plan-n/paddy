@@ -21,6 +21,7 @@ import (
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/record"
 
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -43,9 +44,10 @@ const (
 // GridReconciler reconciles a Grid object
 type GridReconciler struct {
 	client.Client
-	Scheme   *runtime.Scheme
-	Recorder record.EventRecorder
-	NodeName string
+	DeploymentClient *kubernetes.Clientset
+	Scheme           *runtime.Scheme
+	Recorder         record.EventRecorder
+	NodeName         string
 }
 
 //+kubebuilder:rbac:groups=paddy.io,resources=grids,verbs=get;list;watch;create;update;patch;delete
@@ -85,19 +87,9 @@ func (r *GridReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.
 			return ctrl.Result{}, err
 		}
 	}
-	if grid.Status.Phase == "" {
-		grid.Status.Phase = paddyv1.InitializingGridPhase
-		if err = r.Status().Update(ctx, grid); err != nil {
-			logger.Error(err, "Failed to update Grid phase")
-			return ctrl.Result{}, err
-		}
-		if err = r.Get(ctx, req.NamespacedName, grid); err != nil {
-			logger.Error(err, "Failed to re-fetch memcached")
-			return ctrl.Result{}, err
-		}
-		r.recordEvent(grid)
+	if err = r.dealGrid(ctx, grid, req); err != nil {
+		return ctrl.Result{}, err
 	}
-
 	return ctrl.Result{}, nil
 }
 

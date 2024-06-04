@@ -157,3 +157,7 @@ type GridList struct {
 func init() {
 	SchemeBuilder.Register(&Grid{}, &GridList{})
 }
+
+func (g *Grid) GetLogName() string {
+	return g.Spec.Namespace + g.Spec.TargetRef.Name
+}
