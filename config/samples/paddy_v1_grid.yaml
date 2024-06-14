@@ -6,13 +6,13 @@ metadata:
     app.kubernetes.io/managed-by: kustomize
   name: grid-sample
 spec:
-  service:
-    name: details
-    portName: http
-    port: 9080
-    targetPort: "9080"
+  services:
+    - name: details
+      portName: http
+      port: 9080
+      targetPort: "9080"
   targetRef:
-    name: details-v1
+    name: details-v2
     kind: Deployment
     apiVersion: apps/v1
   # TODO(user): Add fields here

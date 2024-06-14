@@ -25,6 +25,8 @@ import (
 // GridPhase is a label for the condition of a canary at the current time
 type GridPhase string
 
+const GridKind = "Grid"
+
 const (
 	InitializingGridPhase GridPhase = "Initializing"
 	InitializedGridPhase  GridPhase = "Initialized"
@@ -117,9 +119,13 @@ type GridSpec struct {
 	// Namespace of resource in Kubernetes,includes deployment\service\scalers
 	// +optional
 	Namespace string `json:"namespace"`
-	// Service of kubernetes
-	Service   GridService  `json:"service"`
-	TargetRef TargetObject `json:"targetRef"`
+	// Services of kubernetes
+	// +optional
+	Services []GridService `json:"services"`
+	// AutoScaler of service
+	// +optional
+	AutoScaler AutoScaler   `json:"autoScaler"`
+	TargetRef  TargetObject `json:"targetRef"`
 	// WebHooks of Grid
 	// +optional
 	WebHooks []WebHook `json:"webHooks,omitempty"`
@@ -160,4 +166,8 @@ func init() {
 
 func (g *Grid) GetLogName() string {
 	return g.Spec.Namespace + g.Spec.TargetRef.Name
+}
+
+func (g *Grid) GetPrimaryName() string {
+	return g.Spec.TargetRef.Name + "-primary"
 }
